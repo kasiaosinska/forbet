@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Wrapper, Input, List, ListEl, Button } from './styled'
 
 const searchCriteria = ['eventName', 'categoryName', 'sportName'];
 
@@ -37,26 +38,25 @@ class Autosuggest extends Component {
   };
 
   renderList = () =>
-    <ul>
+    <List hasData={this.state.list.length > 0}>
       {this.state.list.map((item, i) =>
-        <li key={i}>{item}</li>
+        <ListEl key={i}>{item}</ListEl>
       )}
-    </ul>
-  ;
+    </List>;
 
   render() {
     return(
-      <div>
-        <input
+      <Wrapper>
+        <Input
           type="text"
           name="value"
           value={this.state.value}
           onChange={this.handleChange}
-          placeholder='Wpisz nazwe'
+          placeholder='Szukaj...'
         />
-        <button type="submit">Szukaj</button>
+        <Button type="submit">Szukaj</Button>
         {this.renderList()}
-      </div>
+      </Wrapper>
     )
   }
 }
