@@ -11,6 +11,7 @@ export const Input = styled.input`
   text-decoration: none;
   outline: none;
   box-sizing: border-box;
+  font-size: 14px;
 `;
 
 export const List = styled.ul`
@@ -20,17 +21,15 @@ export const List = styled.ul`
   width: 500px;
   border: ${props => props.hasData && '1px solid lightgray'};
   box-sizing: border-box;
+  font-size: 14px;
 `;
 
 export const ListEl = styled.li`
   height: 25px;
+  line-height: 25px;
   padding: 5px;
   
   &:hover {
     background-color: darkgray;
   }
-`;
-
-export const Button = styled.button`
-  height: 24px;
 `;
