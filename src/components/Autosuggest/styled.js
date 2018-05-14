@@ -6,12 +6,12 @@ export const Wrapper = styled.div`
 
 export const Input = styled.input`
   width: 500px;
-  height: 25px;
+  height: 35px;
   padding: 0 5px;
   text-decoration: none;
   outline: none;
+  font-size: inherit;
   box-sizing: border-box;
-  font-size: 14px;
 `;
 
 export const List = styled.ul`
@@ -19,15 +19,15 @@ export const List = styled.ul`
   margin: 0;
   padding: 0;
   width: 500px;
-  border: ${props => props.hasData && '1px solid lightgray'};
+  border: 1px solid lightgray;
   box-sizing: border-box;
-  font-size: 14px;
 `;
 
 export const ListEl = styled.li`
   height: 25px;
   line-height: 25px;
   padding: 5px;
+  cursor: pointer;
   
   &:hover {
     background-color: darkgray;

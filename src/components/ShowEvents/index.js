@@ -3,34 +3,39 @@ import { List, ListEl } from './styled'
 
 import ShowDetails from '../../components/ShowDetails'
 
-class ShowInfo extends Component {
+class ShowEvents extends Component {
   state = {
-    active: '',
+    selected: null,
   };
 
-  handleSelectEvent = (val) => {
-    this.setState({active: val})
+  componentWillReceiveProps() {
+    this.setState({ selected: null });
+  }
+
+  handleSelectEvent = index => {
+    this.setState({ selected: index });
   };
 
   render() {
-    const { events } = this.props;
-    const { active } = this.state;
-    return (
+    const { events } = this.props,
+      { selected } = this.state;
+
+    return events.length > 0 ? (
       <div>
         <h4>Znalezione wydarzenia:</h4>
         <List>
-          {events.map((item, i) => {
+          {events.map((event, index) => {
             return (
-              <ListEl key={i} onClick={() => this.handleSelectEvent(i)}>
-                {item.eventName}
-                <ShowDetails show={active === i} event={item} />
+              <ListEl key={index} onClick={() => this.handleSelectEvent(index)}>
+                {event.eventName}
+                <ShowDetails show={selected === index} event={event}/>
               </ListEl>
             )
           })}
         </List>
       </div>
-    )
+    ) : null;
   }
 }
 
-export default ShowInfo;
+export default ShowEvents;

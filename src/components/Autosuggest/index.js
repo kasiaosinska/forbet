@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { array } from 'prop-types'
-import ShowInfo from '../ShowEvents'
 import { Wrapper, Input, List, ListEl } from './styled'
+import ShowEvents from "../ShowEvents/index";
 
 const searchCriteria = ['eventName', 'categoryName', 'sportName'];
 
@@ -18,66 +18,77 @@ class Autosuggest extends Component {
     events: [],
     filteredEvents: [],
     value: '',
-    list: [],
-    confirm: false,
+    filteredList: [],
   };
 
   componentDidMount() {
-    this.setState({events: this.props.events, list: [], confirm: false});
+    this.setState({ events: this.props.events });
   }
 
   handleChange = (e) => {
-    this.setState({value: e.target.value, list: [], filteredEvents: []}, () => {
-      let filteredList = [];
-      this.state.events.forEach(event => {
+    this.setState({ value: e.target.value, filteredList: [], filteredEvents: [] }, () => {
+      const { events, value } = this.state,
+        filteredList = [];
+
+      events.forEach(event => {
         searchCriteria.forEach(criteria => {
-          if(event[criteria].toLowerCase().includes(this.state.value.toLowerCase())) {
-            if(!filteredList.includes(event[criteria])){
+          if (event[criteria].toLowerCase().includes(value.toLowerCase())) {
+            if (!filteredList.includes(event[criteria])){
               filteredList.push(event[criteria]);
             }
           }
         })
       });
-      if(this.state.value !== '') {
-        this.setState({ list: filteredList });
+
+      if(value !== '') {
+        this.setState({ filteredList });
       }
     });
   };
 
-  handleConfirm = (val) => {
-    this.setState({value: val, confirm: true, list: []});
-    const list = [];
+  handleSelect = value => {
+    const filteredEvents = [];
+
+    this.setState({ value, filteredList: [] });
     this.state.events.forEach(event => {
       for (let k in event) {
         if (!event.hasOwnProperty(k)) continue;
-        if (event[k] === val) {
-          list.push(event)
+        if (event[k] === value) {
+          filteredEvents.push(event)
         }
       }
-      this.setState({filteredEvents: list})
+      this.setState({ filteredEvents })
     })
   };
 
-  renderList = () =>
-    <List hasData={this.state.list.length > 0}>
-      {this.state.list.map((item, i) =>
-        <ListEl key={i} onClick={() => this.handleConfirm(item)}>{item}</ListEl>
-      )}
-    </List>;
+  renderList = () => {
+    const { filteredList } = this.state;
+
+    if (filteredList.length > 0) {
+      return (
+        <List>
+          {filteredList.map((item, index) =>
+            <ListEl key={index} onClick={() => this.handleSelect(item)}>{item}</ListEl>
+          )}
+        </List>
+      );
+    }
+  };
 
   render() {
-    const { value, confirm, filteredEvents } = this.state;
+    const { value, filteredEvents } = this.state;
+
     return(
       <Wrapper>
         <Input
           type="text"
-          name="value"
+          name="filter"
           value={value}
           onChange={this.handleChange}
-          placeholder='Szukaj...'
+          placeholder="Szukaj..."
         />
         {this.renderList()}
-        {confirm && <ShowInfo events={filteredEvents} />}
+        <ShowEvents events={filteredEvents} />
       </Wrapper>
     )
   }
