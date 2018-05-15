@@ -14,7 +14,7 @@ class App extends Component {
       method: 'GET',
     })
       .then(response => response.json())
-      .then(data => this.setState({ events: data.events }))
+      .then(data => this.setState({events: data.events}))
   }
 
   render() {

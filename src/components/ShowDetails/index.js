@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { List, ListEl, Label, Value } from './styled'
 
 const convertDate = (rawDate) => {
@@ -7,8 +8,7 @@ const convertDate = (rawDate) => {
   return date.toLocaleDateString('pl-PL', options)
 };
 
-const ShowDetails = (props) => {
-  const { show, event: { sportName, eventStart, score, running }} = props;
+const ShowDetails = ({ show, event: { sportName, eventStart, score, running }}) => {
 
   return show ? (
     <List>
@@ -30,6 +30,22 @@ const ShowDetails = (props) => {
       </ListEl>
     </List>
   ) : null;
+};
+
+ShowDetails.propTypes = {
+  show: PropTypes.bool,
+  sportName: PropTypes.string,
+  score: PropTypes.string,
+  running: PropTypes.string,
+  eventStart: PropTypes.string,
+};
+
+ShowDetails.defaultProps = {
+  show: false,
+  sportName: null,
+  score: null,
+  running: null,
+  eventStart: null,
 };
 
 export default ShowDetails;

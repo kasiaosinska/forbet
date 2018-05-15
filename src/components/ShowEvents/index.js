@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
+import { array } from 'prop-types'
 import { List, ListEl } from './styled'
 
 import ShowDetails from '../../components/ShowDetails'
 
 class ShowEvents extends Component {
+  static propTypes = {
+    events: array.isRequired,
+  };
+
   state = {
     selected: null,
   };
@@ -12,7 +17,7 @@ class ShowEvents extends Component {
     this.setState({ selected: null });
   }
 
-  handleSelectEvent = index => {
+  handleSelectEvent = index => () => {
     this.setState({ selected: index });
   };
 
@@ -26,7 +31,7 @@ class ShowEvents extends Component {
         <List>
           {events.map((event, index) => {
             return (
-              <ListEl key={index} onClick={() => this.handleSelectEvent(index)}>
+              <ListEl key={index} onClick={this.handleSelectEvent(index)}>
                 {event.eventName}
                 <ShowDetails show={selected === index} event={event}/>
               </ListEl>

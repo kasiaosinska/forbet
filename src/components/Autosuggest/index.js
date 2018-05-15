@@ -10,24 +10,16 @@ class Autosuggest extends Component {
     events: array.isRequired,
   };
 
-  static defaultProps = {
-    events: [],
-  };
-
   state = {
-    events: [],
     filteredEvents: [],
     value: '',
     filteredList: [],
   };
 
-  componentDidMount() {
-    this.setState({ events: this.props.events });
-  }
-
   handleChange = (e) => {
     this.setState({ value: e.target.value, filteredList: [], filteredEvents: [] }, () => {
-      const { events, value } = this.state,
+      const { value } = this.state,
+        { events } = this.props,
         filteredList = [];
 
       events.forEach(event => {
@@ -40,17 +32,17 @@ class Autosuggest extends Component {
         })
       });
 
-      if(value !== '') {
+      if(value) {
         this.setState({ filteredList });
       }
     });
   };
 
-  handleSelect = value => {
+  handleSelect = value => () => {
     const filteredEvents = [];
 
     this.setState({ value, filteredList: [] });
-    this.state.events.forEach(event => {
+    this.props.events.forEach(event => {
       for (let k in event) {
         if (!event.hasOwnProperty(k)) continue;
         if (event[k] === value) {
@@ -68,7 +60,7 @@ class Autosuggest extends Component {
       return (
         <List>
           {filteredList.map((item, index) =>
-            <ListEl key={index} onClick={() => this.handleSelect(item)}>{item}</ListEl>
+            <ListEl key={index} onClick={this.handleSelect(item)}>{item}</ListEl>
           )}
         </List>
       );
